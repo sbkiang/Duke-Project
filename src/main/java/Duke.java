@@ -5,10 +5,50 @@ public class Duke {
 
     private static int listNum = 0;
 
-    public static void addList(String[] list, String inputText){
-        list[listNum] = inputText;
+    public static String commandCheck(String inputText){
+        String [] words = inputText.split(" ");
+        return words[0];
+    }
+
+    public static void addTask(String[] list, String inputText){
+
+        Task task = new Task(inputText);
+
         System.out.println("added: " + inputText);
+
+        list[listNum] = "[" + task.getStatusIcon() + "] " + task.description;
         listNum++;
+
+        return;
+    }
+
+    public static void markTask(String[] list, String inputText){
+        inputText = inputText.substring(5);
+        int x = Integer.parseInt(inputText);
+
+        Task task = new Task(list[x-1].substring(4));
+        task.markAsDone();
+
+        list[x-1] = "[" + task.getStatusIcon() + "] " + task.description;
+
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println(list[x-1]);
+
+        return;
+    }
+
+    public static void unmarkTask (String[] list, String inputText){
+        inputText = inputText.substring(7);
+        int x = Integer.parseInt(inputText);
+
+        Task task = new Task(list[x-1].substring(4));
+
+        list[x-1] = "[" + task.getStatusIcon() + "] " + task.description;
+
+        System.out.println("OK, I've marked this task as not done yet:");
+
+        System.out.println(list[x-1]);
+
         return;
     }
 
@@ -59,24 +99,36 @@ public class Duke {
             inputText = input.nextLine();
             inputText = inputText.toLowerCase();
 
-            System.out.println("-------------------------------------------------");
+            if(!inputText.isBlank()){
+                System.out.println("-------------------------------------------------");
+            }
 
-            if(inputText.contains("list")){
+            String commandText = commandCheck(inputText);
+
+            if(commandText.equals("list")){
                 printList(list);
             }
-            else if (inputText.contains("blah")) {
+            else if (commandText.equals("blah")) {
                 System.out.println("blah");
             }
-            else if(inputText.contains("bye")){
+            else if (commandText.equals("mark")){
+                markTask(list, inputText);
+            }
+            else if (commandText.equals("unmark")){
+                unmarkTask(list, inputText);
+            }
+            else if(commandText.equals("bye")){
                 exitProgram();
             }
             else{
                 if(!inputText.isBlank()){
-                    addList(list, inputText);
+                    addTask(list, inputText);
                 }
             }
 
-            System.out.println("-------------------------------------------------");
+            if(!inputText.isBlank()){
+                System.out.println("-------------------------------------------------");
+            }
 
         }
     }
