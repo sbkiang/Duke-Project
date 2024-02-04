@@ -15,4 +15,12 @@ public class Task {
        this.isDone = true;
     }
 
+    public void unmarkAsDone(){
+        this.isDone = false;
+    }
+
+    public String toString(){
+        return "[" + getStatusIcon() +"] " + description;
+    }
+
 }

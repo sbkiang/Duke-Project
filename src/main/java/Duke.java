@@ -1,68 +1,74 @@
-import java.util.List;
 import java.util.Scanner;
 
 public class Duke {
 
     private static int listNum = 0;
+    private static String[] word;
 
     public static String commandCheck(String inputText){
         String [] words = inputText.split(" ");
         return words[0];
     }
 
-    public static void addTask(String[] list, String inputText){
+    public static String[] words (String inputText){
+        return word = inputText.split(" ");
+    }
 
-        Task task = new Task(inputText);
+    public static void addTask(Task[] tasks, String inputText){
+
+        tasks[listNum] = new Task(inputText);
 
         System.out.println("added: " + inputText);
 
-        list[listNum] = "[" + task.getStatusIcon() + "] " + task.description;
         listNum++;
-
-        return;
     }
 
-    public static void markTask(String[] list, String inputText){
+    public static void markTask(Task[] tasks, String inputText){
         inputText = inputText.substring(5);
-        int x = Integer.parseInt(inputText);
+        int x = Integer.parseInt(inputText) - 1;
 
-        Task task = new Task(list[x-1].substring(4));
-        task.markAsDone();
-
-        list[x-1] = "[" + task.getStatusIcon() + "] " + task.description;
+        tasks[x].markAsDone();
 
         System.out.println("Nice! I've marked this task as done:");
-        System.out.println(list[x-1]);
-
-        return;
+        System.out.println(tasks[x].toString());
     }
 
-    public static void unmarkTask (String[] list, String inputText){
+    public static void unmarkTask(Task[] tasks, String inputText){
         inputText = inputText.substring(7);
-        int x = Integer.parseInt(inputText);
+        int x = Integer.parseInt(inputText) - 1;
 
-        Task task = new Task(list[x-1].substring(4));
+        tasks[x].unmarkAsDone();
 
-        list[x-1] = "[" + task.getStatusIcon() + "] " + task.description;
-
-        System.out.println("OK, I've marked this task as not done yet:");
-
-        System.out.println(list[x-1]);
-
-        return;
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println(tasks[x].toString());
     }
 
-    public static void printList(String [] list){
+    public static void toDoTask(Task[] tasks, String inputText){
+        tasks[listNum] = new ToDo(inputText);
+        System.out.println("Got it. I've added this task:");
+        System.out.println(tasks[listNum].toString());
+        int x = listNum + 1;
+        System.out.println("Now you have " + x + " tasks in the list");
+        listNum++;
+
+    }
+
+    public static void deadlineTask(Task[] tasks, String inputText){
+
+        String[] by  = words(inputText);
+        tasks[listNum] = new Deadline(inputText, by[4]);
+    }
+
+    public static void printList(Task [] tasks){
 
         int index = 1;
 
-        for(String task: list){
+        for(Task task: tasks){
             if(task != null){
                 System.out.println(index + ". " + task);
                 index++;
             }
         }
-        return;
     }
 
     public static void exitProgram(){
@@ -72,9 +78,11 @@ public class Duke {
 
     public static void main(String[] args) {
 
-        String [] list = new String[100];
+        //String [] list = new String[100];
         Scanner input = new Scanner(System.in);
-        String inputText = "";
+        String inputText;
+
+        Task [] tasks = new Task[100];
 
         //Design below adapted from "https://patorjk.com/software/taag/#p=display&f=Blocks&t=TrackMe"
         String logo = ".----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. \n"
@@ -106,23 +114,31 @@ public class Duke {
             String commandText = commandCheck(inputText);
 
             if(commandText.equals("list")){
-                printList(list);
+                printList(tasks);
             }
             else if (commandText.equals("blah")) {
                 System.out.println("blah");
             }
             else if (commandText.equals("mark")){
-                markTask(list, inputText);
+                markTask(tasks, inputText);
             }
             else if (commandText.equals("unmark")){
-                unmarkTask(list, inputText);
+                unmarkTask(tasks, inputText);
             }
             else if(commandText.equals("bye")){
                 exitProgram();
             }
+            else if (commandText.equals("todo")){
+                inputText = inputText.substring(4); //remove commands
+                toDoTask(tasks, inputText);
+            }
+            else if (commandText.equals("deadline")){
+                inputText = inputText.substring(8); //remove commands
+                deadlineTask(tasks, inputText);
+            }
             else{
                 if(!inputText.isBlank()){
-                    addTask(list, inputText);
+                    addTask(tasks, inputText);
                 }
             }
 
