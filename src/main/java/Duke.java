@@ -1,11 +1,15 @@
+import Parse.ParseCommand;
+import Task.TaskList;
+
 import java.util.Scanner;
 import static common.Logo.LOGO;
 
 public class Duke {
     private static final String LINE = "-------------------------------------------------";
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        String inputText;
+        String inputCommand;
         TaskList task = new TaskList();
 
         System.out.println(LOGO);
@@ -14,48 +18,51 @@ public class Duke {
         System.out.println(LINE);
 
         while(true) {
-            inputText = input.nextLine();
-            inputText = inputText.toLowerCase();
+            inputCommand = input.nextLine();
+            inputCommand = inputCommand.toLowerCase();
 
-            if(!inputText.isBlank()){
+            if(!inputCommand.isBlank()){
                 System.out.println(LINE);
             }
 
-            String [] command = inputText.split("\\s+");
+            ParseCommand parseCommand = new ParseCommand(inputCommand);
+            String arg, cmd;
+            String [] parsedInput;
 
-            if(command[0].equals("list")){
+            if(inputCommand.startsWith("list")){
                 task.listTasks();
             }
-            else if (command[0].equals("blah")) {
+            else if (inputCommand.startsWith("blah")) {
                 System.out.println("blah");
             }
-            else if (command[0].equals("mark")){
+            else if (inputCommand.startsWith("mark")){
                 task.markTaskAsDone(1);
             }
-            else if (command[0].equals("unmark")){
+            else if (inputCommand.startsWith("unmark")){
                 task.unmarkTaskAsDone(1);
             }
-            else if(command[0].equals("bye")){
+            else if(inputCommand.startsWith("bye")){
                 task.endTaskProgram();
             }
-            else if (command[0].equals("todo")){
-                inputText = inputText.substring(4); //remove commands
-                task.toDoTask(inputText);
+            else if (inputCommand.startsWith("todo")){
+                arg = parseCommand.TodoCommand();
+                task.toDoTask(arg);
             }
-            else if (command[0].equals("deadline")){
-                inputText = inputText.substring(8); //remove commands
-                task.deadlineTask(inputText, inputText);
+            else if (inputCommand.startsWith("deadline")){
+                parsedInput = parseCommand.DeadlineCommand();
+                task.deadlineTask(parsedInput[0], parsedInput[1]);
             }
-            else if (command[0].equals("event")){
-                task.eventTask(inputText, inputText, inputText);
+            else if (inputCommand.startsWith("event")){
+                parsedInput = parseCommand.EventCommand();
+                task.eventTask(parsedInput[0], parsedInput[1], parsedInput[2]);
             }
             else{
-                if(!inputText.isBlank()){
-                    task.addTask(inputText);
+                if(!inputCommand.isBlank()){
+                    task.addTask(inputCommand);
                 }
             }
 
-            if(!inputText.isBlank()){
+            if(!inputCommand.isBlank()){
                 System.out.println(LINE);
             }
 
