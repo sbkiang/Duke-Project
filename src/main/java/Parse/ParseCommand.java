@@ -6,10 +6,19 @@ import java.util.regex.Pattern;
 public class ParseCommand {
 
     private String inputCommands;
-    private String cmd, arg, by, from, to;
+    private String cmd, arg, by, from, to, idx;
 
     public ParseCommand(String inputCommands){
         this.inputCommands = inputCommands ;
+    }
+
+    public String mainCommand(){
+        //return first uppercase word
+        return inputCommands.split(" ")[0].toUpperCase();
+    }
+
+    public String indexCommand(){
+        return inputCommands.split(" ")[1];
     }
 
     public String TodoCommand(){
