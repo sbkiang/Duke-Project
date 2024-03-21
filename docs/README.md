@@ -12,9 +12,9 @@ Description of the feature.
 
 ## Usage
 
-### `Keyword` - Describe action
+### `Keyword` - Describe nus.trackme.action
 
-Describe the action and its outcome.
+Describe the nus.trackme.action and its outcome.
 
 Example of usage: 
 

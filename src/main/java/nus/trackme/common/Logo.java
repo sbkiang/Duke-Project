@@ -1,4 +1,4 @@
-package common;
+package nus.trackme.common;
 
 public class Logo {
     //Design below adapted from "https://patorjk.com/software/taag/#p=display&f=Blocks&t=TrackMe"

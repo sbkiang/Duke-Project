@@ -1,4 +1,4 @@
-package commands;
+package nus.trackme.commands;
 
 public class Event extends Task {
 
