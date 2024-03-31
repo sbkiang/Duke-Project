@@ -2,8 +2,8 @@ package nus.trackme;
 
 import nus.trackme.common.EnumList;
 import nus.trackme.data.LoadFile;
-import nus.trackme.parse.ParseCommand;
-import nus.trackme.action.ActionTask;
+import nus.trackme.parser.ParseCommand;
+import nus.trackme.ui.UITask;
 import nus.trackme.exception.TrackMeException;
 
 import static nus.trackme.common.Logo.LOGO;
@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main {
     private static final String LINE = "-------------------------------------------------";
 
-    private static ActionTask task = new ActionTask();
+    private static UITask task = new UITask();
 
     private static void load() throws TrackMeException{
         new LoadFile(task);
@@ -25,7 +25,7 @@ public class Main {
         String userInput = null;
 
         System.out.println(LOGO);
-        System.out.println("Hello! I'm nus.trackme.TrackMe");
+        System.out.println("Hello! I'm TrackMe");
         System.out.println("What can I do for you?");
         System.out.println(LINE);
 

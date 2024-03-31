@@ -1,8 +1,7 @@
 package nus.trackme.data;
 
-import nus.trackme.action.ActionTask;
+import nus.trackme.ui.UITask;
 import nus.trackme.common.EnumList;
-import nus.trackme.parse.ParseCommand;
 
 import java.io.*;
 
@@ -11,7 +10,7 @@ public class LoadFile {
     private static final String filename = ".\\src\\main\\java\\nus\\trackme\\data\\storage.txt";
     private static final File tempFile = new File(".\\src\\main\\java\\nus\\trackme\\data\\tmp2.txt");
 
-    public LoadFile(ActionTask task){
+    public LoadFile(UITask task){
 
         File originalFile = new File(filename);
 

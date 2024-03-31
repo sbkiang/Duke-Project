@@ -1,14 +1,15 @@
-package nus.trackme.action;
+package nus.trackme.ui;
 
 import nus.trackme.commands.Event;
 import nus.trackme.commands.Task;
 import nus.trackme.commands.ToDo;
 import nus.trackme.commands.Deadline;
 import nus.trackme.data.FileIO;
+import nus.trackme.parser.ParseDateTime;
 
 import java.util.ArrayList;
 
-public class ActionTask {
+public class UITask {
     private static final int MAX_SIZE = 100;
 
     //private Task[] tasks;
@@ -16,7 +17,7 @@ public class ActionTask {
 
     private int size;
 
-    public ActionTask(){
+    public UITask(){
         tasks = new ArrayList<>();
         size = 0;
     }
@@ -63,23 +64,33 @@ public class ActionTask {
     }
 
     public void deadlineTask(String task, String by){
-        tasks.add(new Deadline(task, by));
-        new FileIO("D", task, by, "-", "-");
-        size++;
-        System.out.println("Got it. I've added this task:");
-        System.out.println(tasks.get(size-1).toString());
-        System.out.println("Now you have " + size + " tasks in the list");
+        ParseDateTime dateTime = new ParseDateTime(by);
+        if(dateTime.isCorrect()){
+            tasks.add(new Deadline(task, dateTime.toString()));
+            new FileIO("D", task, by, "-", "-");
+            size++;
+            System.out.println("Got it. I've added this task:");
+            System.out.println(tasks.get(size-1).toString());
+            System.out.println("Now you have " + size + " tasks in the list");
+        }
     }
 
-    public void eventTask(String task, String from, String to){
-        tasks.add(new Event(task, from, to));
-        new FileIO("E", task, "-", from, to);
-        size++;
-        System.out.println("Got it. I've added this task:");
-        System.out.println(tasks.get(size-1).toString());
-        System.out.println("Now you have " + size + " tasks in the list");
-    }
+    public void eventTask(String task, String from, String to) {
+        ParseDateTime dateTime1 = new ParseDateTime(from);
+        ParseDateTime dateTime2 = new ParseDateTime(to);
 
+        if (dateTime1.isCorrect() && dateTime2.isCorrect()) {
+
+            if(dateTime1.isCompare(dateTime2.date(), dateTime2.time())){
+                tasks.add(new Event(task, dateTime1.toString(), dateTime2.toString()));
+                new FileIO("E", task, "-", from, to);
+                size++;
+                System.out.println("Got it. I've added this task:");
+                System.out.println(tasks.get(size - 1).toString());
+                System.out.println("Now you have " + size + " tasks in the list");
+            }
+        }
+    }
     public void endTaskProgram(){
         System.out.println("Bye. Hope to see you again");
         System.exit(0);

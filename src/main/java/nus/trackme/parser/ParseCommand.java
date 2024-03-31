@@ -1,4 +1,4 @@
-package nus.trackme.parse;
+package nus.trackme.parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
