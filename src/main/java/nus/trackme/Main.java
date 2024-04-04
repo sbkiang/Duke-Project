@@ -3,11 +3,15 @@ package nus.trackme;
 import nus.trackme.common.EnumList;
 import nus.trackme.data.LoadFile;
 import nus.trackme.parser.ParseCommand;
+import nus.trackme.parser.ParseDateTime;
 import nus.trackme.ui.UITask;
 import nus.trackme.exception.TrackMeException;
 
 import static nus.trackme.common.Logo.LOGO;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Scanner;
 
 public class Main {
@@ -26,6 +30,24 @@ public class Main {
 
         System.out.println(LOGO);
         System.out.println("Hello! I'm TrackMe");
+
+        if(task.taskSize() != 0){
+            System.out.println("Reminder: Upcoming Task for this week");
+            System.out.println(LINE);
+
+            // Get the current date
+            LocalDate currentDate = LocalDate.now();
+            // Calculate the end of the current week (Sunday)
+            LocalDate endOfWeek = currentDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+            // Calculate the number of days left in the current week
+            long daysLeftInWeek = currentDate.until(endOfWeek).getDays();
+            // Calculate the reminder period based on the days left in the current week
+            int reminderDays = (int) Math.min(daysLeftInWeek, 7); // Maximum reminder period is 7 days
+
+            task.remindUpcomingTask(LocalDate.now(), reminderDays);
+            System.out.println(LINE);
+        }
+
         System.out.println("What can I do for you?");
         System.out.println(LINE);
 
@@ -77,20 +99,16 @@ public class Main {
                         break;
                 }
                 System.out.println(LINE);
-            }
-            catch (TrackMeException e){
+            } catch (TrackMeException e){
                 System.out.println(e.getMessage());
-            }
-            catch (IllegalArgumentException e){ /* Commands does not exist in enum*/
+            } catch (IllegalArgumentException e){ /* Commands does not exist in enum*/
                 System.out.println("Incorrect Command: " + userInput);
                 System.out.println(LINE);
-            }
-            catch (ArrayIndexOutOfBoundsException e){ /* For mark and unmark without index  */
+            } catch (ArrayIndexOutOfBoundsException e){ /* For mark and unmark without index  */
                 System.out.println("Incorrect Command: " + userInput);
                 System.out.println("Please put index number. E.g. " + userInput + " 1");
                 System.out.println(LINE);
-            }
-            catch (IndexOutOfBoundsException e){ /*  */
+            } catch (IndexOutOfBoundsException e){ /*  */
                 System.out.println("Task is currently empty. Please add your task first");
                 System.out.println(LINE);
             }

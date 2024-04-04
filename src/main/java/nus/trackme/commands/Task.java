@@ -1,5 +1,5 @@
 package nus.trackme.commands;
-
+import java.time.LocalDate;
 
 public class Task {
     protected String description;
@@ -20,6 +20,10 @@ public class Task {
 
     public void unmarkAsDone(){
         this.isDone = false;
+    }
+
+    public boolean isUpcoming(LocalDate currentDate, int reminderDays){
+        return false;
     }
 
     public String toString(){

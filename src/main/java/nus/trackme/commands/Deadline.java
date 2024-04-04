@@ -1,4 +1,6 @@
 package nus.trackme.commands;
+import nus.trackme.parser.ParseDateTime;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +15,15 @@ public class Deadline extends Task {
         this.by = by;
 
     }
+
+    public boolean isUpcoming(LocalDate currentDate, int reminderDays){
+        //Parse the date string
+        ParseDateTime date = new ParseDateTime(by);
+        LocalDate deadlineDate = date.deadlineDate(by);
+        LocalDate reminderDate = currentDate.plusDays(reminderDays);
+        return !deadlineDate.isAfter(reminderDate) && deadlineDate.isAfter(currentDate);
+    }
+
     @Override
     public String toString() {
         return "[D]" + super.toString() + " " + "(by: " + by + ")";

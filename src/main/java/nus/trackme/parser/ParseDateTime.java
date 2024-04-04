@@ -1,9 +1,11 @@
 package nus.trackme.parser;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,6 +81,13 @@ public class ParseDateTime {
             }
         }
         return false;
+    }
+
+    public LocalDate deadlineDate(String dateTime){
+        String[] parts = dateTime.split(" ");
+        parsedDate = parts[0] + " " + parts[1] + " " + parts[2];
+        LocalDate date = LocalDate.parse(parsedDate, DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        return LocalDate.parse(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
     public String toString(){

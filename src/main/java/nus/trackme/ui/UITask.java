@@ -7,6 +7,7 @@ import nus.trackme.commands.Deadline;
 import nus.trackme.data.FileIO;
 import nus.trackme.parser.ParseDateTime;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class UITask {
@@ -91,6 +92,19 @@ public class UITask {
             }
         }
     }
+
+    public void remindUpcomingTask(LocalDate currentDate, int reminderDays){
+        for(Task task: tasks){
+            if((task.toString().contains("[E]") || task.toString().contains("[D]")) && task.isUpcoming(currentDate, reminderDays)){
+                System.out.println(task.toString());
+            }
+        }
+    }
+
+    public int taskSize(){
+        return size;
+    }
+
     public void endTaskProgram(){
         System.out.println("Bye. Hope to see you again");
         System.exit(0);

@@ -13,6 +13,16 @@ public class FileIO {
 
     private static final File tempFile = new File(".\\src\\main\\java\\nus\\trackme\\data\\tmp.txt");
 
+    public void CreateTempFile(){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+            // Empty the temporary file
+            writer.write(""); // Write an empty string
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
     public FileIO(String cmd, String task, String by, String from, String to) {
         SaveTask(cmd, task, by, from, to);
     }
@@ -40,13 +50,7 @@ public class FileIO {
 
     public void ModifyTask(String cmd, String isDone, int index){
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-            // Empty the temporary file
-            writer.write(""); // Write an empty string
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+        CreateTempFile();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile, true));
              BufferedReader reader = new BufferedReader(new FileReader(filename))){
@@ -82,13 +86,7 @@ public class FileIO {
 
     public void DeleteTask(String cmd, int index){
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-            // Empty the temporary file
-            writer.write(""); // Write an empty string
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+        CreateTempFile();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile, true));
              BufferedReader reader = new BufferedReader(new FileReader(filename))){
