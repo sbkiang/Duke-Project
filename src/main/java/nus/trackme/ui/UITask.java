@@ -56,12 +56,14 @@ public class UITask {
     }
 
     public void toDoTask(String task){
-        tasks.add(new ToDo(task));
-        new FileIO("T", task, "-", "-", "-");
-        size++;
-        System.out.println("Got it. I've added this task:");
-        System.out.println(tasks.get(size-1).toString());
-        System.out.println("Now you have " + size + " tasks in the list");
+        if(!task.isEmpty()){
+            tasks.add(new ToDo(task));
+            new FileIO("T", task, "-", "-", "-");
+            size++;
+            System.out.println("Got it. I've added this task:");
+            System.out.println(tasks.get(size-1).toString());
+            System.out.println("Now you have " + size + " tasks in the list");
+        }
     }
 
     public void deadlineTask(String task, String by){
@@ -81,7 +83,6 @@ public class UITask {
         ParseDateTime dateTime2 = new ParseDateTime(to);
 
         if (dateTime1.isCorrect() && dateTime2.isCorrect()) {
-
             if(dateTime1.isCompare(dateTime2.date(), dateTime2.time())){
                 tasks.add(new Event(task, dateTime1.toString(), dateTime2.toString()));
                 new FileIO("E", task, "-", from, to);
@@ -93,11 +94,44 @@ public class UITask {
         }
     }
 
+    public void findTask(String arg){
+        if(!arg.isEmpty()) {
+            boolean found = false;
+            int index = 1;
+            for (Task task : tasks) {
+                if (task == null) {
+                    break;
+                } else if (task.toString().contains(arg)) {
+                    if (!found) {
+                        System.out.println("Here are the matching tasks in your lists");
+                        found = true;
+                    }
+                    System.out.println(index + ". " + task.toString());
+                    index++;
+                }
+            }
+            if (!found) {
+                System.out.println("Unable to find the matching tasks in your lists");
+            }
+        }
+    }
+
     public void remindUpcomingTask(LocalDate currentDate, int reminderDays){
+        boolean found = false;
+
         for(Task task: tasks){
-            if((task.toString().contains("[E]") || task.toString().contains("[D]")) && task.isUpcoming(currentDate, reminderDays)){
+            if((task.toString().contains("[E]") || task.toString().contains("[D]")) && !task.isDone() && task.isUpcoming(currentDate, reminderDays)){
+                if(!found){
+                    System.out.println("Reminder: Upcoming Task for this week");
+                    System.out.println("-------------------------------------------------");
+                    found = true;
+                }
                 System.out.println(task.toString());
             }
+        }
+
+        if(found){
+            System.out.println("-------------------------------------------------");
         }
     }
 

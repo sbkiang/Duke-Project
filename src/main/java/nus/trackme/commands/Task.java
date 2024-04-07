@@ -26,6 +26,10 @@ public class Task {
         return false;
     }
 
+    public boolean isDone(){
+        return isDone;
+    }
+
     public String toString(){
         return "[" + getStatusIcon() +"] " + description;
     }

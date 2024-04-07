@@ -21,7 +21,7 @@ public class ParseCommand {
         return inputCommands.split(" ")[1];
     }
 
-    public String TodoCommand(){
+    public String todoCommand(){
         Pattern pattern = Pattern.compile("todo\\s(.*?)"); //argument
         Matcher matcher = pattern.matcher(inputCommands); //deadline when
         if(matcher.matches()){
@@ -51,6 +51,16 @@ public class ParseCommand {
             to = matcher.group(3);
         }
         return new String[]{arg, from, to};
+    }
+
+    public String findCommand(){
+        Pattern pattern = Pattern.compile("find\\s(.*?)"); //argument
+        Matcher matcher = pattern.matcher(inputCommands); //deadline when
+        if(matcher.matches()){
+            arg = matcher.group(1);
+        }
+
+        return arg;
     }
 
 }

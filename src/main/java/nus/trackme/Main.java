@@ -3,7 +3,6 @@ package nus.trackme;
 import nus.trackme.common.EnumList;
 import nus.trackme.data.LoadFile;
 import nus.trackme.parser.ParseCommand;
-import nus.trackme.parser.ParseDateTime;
 import nus.trackme.ui.UITask;
 import nus.trackme.exception.TrackMeException;
 
@@ -30,11 +29,7 @@ public class Main {
 
         System.out.println(LOGO);
         System.out.println("Hello! I'm TrackMe");
-
         if(task.taskSize() != 0){
-            System.out.println("Reminder: Upcoming Task for this week");
-            System.out.println(LINE);
-
             // Get the current date
             LocalDate currentDate = LocalDate.now();
             // Calculate the end of the current week (Sunday)
@@ -44,8 +39,7 @@ public class Main {
             // Calculate the reminder period based on the days left in the current week
             int reminderDays = (int) Math.min(daysLeftInWeek, 7); // Maximum reminder period is 7 days
 
-            task.remindUpcomingTask(LocalDate.now(), reminderDays);
-            System.out.println(LINE);
+            task.remindUpcomingTask(currentDate, reminderDays);
         }
 
         System.out.println("What can I do for you?");
@@ -74,7 +68,7 @@ public class Main {
                         task.listTasks();
                         break;
                     case TODO:
-                        arg = parseCommand.TodoCommand();
+                        arg = parseCommand.todoCommand();
                         task.toDoTask(arg);
                         break;
                     case EVENT:
@@ -94,6 +88,10 @@ public class Main {
                     case DELETE:
                         task.deleteTask(Integer.parseInt(parseCommand.indexCommand()) - 1);
                         break;
+                    case FIND:
+                        arg = parseCommand.findCommand();
+                        task.findTask(arg);
+                        break;
                     case BYE:
                         task.endTaskProgram();
                         break;
@@ -102,17 +100,28 @@ public class Main {
             } catch (TrackMeException e){
                 System.out.println(e.getMessage());
             } catch (IllegalArgumentException e){ /* Commands does not exist in enum*/
-                System.out.println("Incorrect Command: " + userInput);
+                System.out.println("Invalid Command: " + userInput);
                 System.out.println(LINE);
             } catch (ArrayIndexOutOfBoundsException e){ /* For mark and unmark without index  */
-                System.out.println("Incorrect Command: " + userInput);
+                System.out.println("Incomplete Command: " + userInput);
                 System.out.println("Please put index number. E.g. " + userInput + " 1");
                 System.out.println(LINE);
             } catch (IndexOutOfBoundsException e){ /*  */
                 System.out.println("Task is currently empty. Please add your task first");
                 System.out.println(LINE);
+            } catch (NullPointerException e){
+                System.out.println("Incomplete Command: " + userInput);
+                if(userInput.contains("todo")){
+                    System.out.println("Eg. todo borrow book");
+                }
+                else if(userInput.contains("deadline")){
+                    System.out.println("E.g. " + userInput + " book \\by 07/04/2024 1200");
+                }
+                else if(userInput.contains("find")){
+                    System.out.println("E.g. " + userInput + " book");
+                }
+                System.out.println(LINE);
             }
-
         }
     }
 

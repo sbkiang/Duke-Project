@@ -17,7 +17,7 @@ public class LoadFile {
         if (originalFile.exists()) {
 
             //Reference: https://stackoverflow.com/questions/54126403/show-stdout-in-file-and-in-console-with-system-setoutnew-printstreamnew-file
-            // Temporarily disable System.out.println
+            /* Temporarily disable System.out.println */
             PrintStream originalOut = System.out;
             System.setOut(new PrintStream(new OutputStream() { public void write(int b) {}}));
 

@@ -30,7 +30,7 @@ public class ParseDateTime {
     public boolean isCorrect(){
 
         //Split the date and time
-        Pattern pattern = Pattern.compile("(\\d{1,2}/\\d{1,2}/\\d{4}) (\\d{4})");
+        Pattern pattern = Pattern.compile("(\\d{1,2}/\\d{1,2}/\\d{2,4}) (\\d{4})");
         Matcher matcher = pattern.matcher(dateTime);
 
         if (matcher.find()) {
@@ -48,10 +48,17 @@ public class ParseDateTime {
                     deadlineDate = LocalDate.parse(parsedDate, DateTimeFormatter.ofPattern(dateFormat));
                     deadlineTime = LocalTime.parse(parsedTime, DateTimeFormatter.ofPattern(timeFormat));
 
-                    //Reformat the date and time
-                    this.dateTime = deadlineDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + " " + deadlineTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+                    LocalDateTime dt = deadlineDate.atTime(deadlineTime);
 
-                    return true;
+                    if(dt.isAfter(LocalDateTime.now())){
+                        //Reformat the date and time
+                        this.dateTime = deadlineDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + " " + deadlineTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+                        return true;
+                    }
+                    else{
+                        System.out.println("Invalid given date and time! Please ensure the date and time provided is not in past.");
+                        return false;
+                    }
 
                 } catch (Exception e) {
                     continue;
@@ -59,7 +66,7 @@ public class ParseDateTime {
             }
         }
 
-        System.out.println("Incorrect datetime format!! Please provide the datetime in this format dd/MM/yyyy HHmm.");
+        System.out.println("Invalid datetime format! Please ensure the datetime is provided in the format dd/MM/yyyy HHmm or d/M/yy HHmm.");
         return false;
     }
 
@@ -71,7 +78,7 @@ public class ParseDateTime {
                     LocalDateTime endDateTime = LocalDateTime.parse(endDate + " " + endTime, DateTimeFormatter.ofPattern(dateFormat + " " + timeFormat));
 
                     if(!endDateTime.isAfter(startDateTime)){
-                        System.out.println("Incorrect timeline!! Please correct your timeline");
+                        System.out.println("Invalid timeline! Please adjust your timeline accordingly");
                         return endDateTime.isAfter(startDateTime);
                     }
 

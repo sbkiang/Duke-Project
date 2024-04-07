@@ -3,7 +3,6 @@ package nus.trackme.commands;
 import nus.trackme.parser.ParseDateTime;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Event extends Task {
 

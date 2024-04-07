@@ -19,7 +19,6 @@ public class FileIO {
             writer.write(""); // Write an empty string
         } catch (IOException e) {
             e.printStackTrace();
-            return;
         }
     }
 
@@ -28,7 +27,7 @@ public class FileIO {
     }
 
     public FileIO(String cmd, String isDone, int index) {
-        ModifyTask(cmd, isDone, index);
+        ModifyTask(isDone, index);
     }
 
     public FileIO(String cmd, int index) {
@@ -48,7 +47,7 @@ public class FileIO {
 
     }
 
-    public void ModifyTask(String cmd, String isDone, int index){
+    public void ModifyTask(String isDone, int index){
 
         CreateTempFile();
 
