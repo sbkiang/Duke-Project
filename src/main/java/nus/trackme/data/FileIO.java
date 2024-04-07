@@ -13,6 +13,9 @@ public class FileIO {
 
     private static final File tempFile = new File(".\\src\\main\\java\\nus\\trackme\\data\\tmp.txt");
 
+    /**
+     * Create temporary text file.
+     */
     public void CreateTempFile(){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             // Empty the temporary file
@@ -22,18 +25,44 @@ public class FileIO {
         }
     }
 
+    /**
+     * Constructs to use saveTask method to save task into text file.
+     *
+     * @param cmd Type of commands.
+     * @param task User input task.
+     * @param by when is task end used by deadline command.
+     * @param from when the task start used by event command.
+     * @param to when the task end used by event command.
+     */
     public FileIO(String cmd, String task, String by, String from, String to) {
         SaveTask(cmd, task, by, from, to);
     }
 
+    /**
+     * Constructs to use modifyTask method to modify existing task in text file
+     *
+     * @param cmd Type of commands.
+     * @param isDone Is the task completed.
+     * @param index To pinpoint which task to modify.
+     */
     public FileIO(String cmd, String isDone, int index) {
         ModifyTask(isDone, index);
     }
 
+    /**
+     * Constructs to use deleteTask method to delete existing task in text file
+     *
+     * @param cmd Type of commands.
+     * @param index To point which task to delete.
+     */
     public FileIO(String cmd, int index) {
         DeleteTask(cmd, index);
     }
 
+    /**
+     * To save the file into text file
+     *
+     */
     public void SaveTask(String cmd, String task, String by, String from, String to){
 
         //Reference: "https://www.youtube.com/watch?v=ScUJx4aWRi0&ab_channel=CodingwithJohn"
@@ -47,6 +76,10 @@ public class FileIO {
 
     }
 
+    /**
+     * To modify the existing task in text file
+     *
+     */
     public void ModifyTask(String isDone, int index){
 
         CreateTempFile();
@@ -83,6 +116,10 @@ public class FileIO {
 
     }
 
+    /**
+     * To delete the existing file in text file
+     *
+     */
     public void DeleteTask(String cmd, int index){
 
         CreateTempFile();

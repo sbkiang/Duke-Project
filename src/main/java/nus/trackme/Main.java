@@ -13,6 +13,17 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Scanner;
 
+
+/**
+ * The project is implements an application for task tracking. It is providing users with a convenient and efficient
+ * way to manage their tasks. The application will allow users to add, delete, mark as done and search for task.
+ * With its intuitive and user-friendly interface, this task tracking application will streamline task management for
+ * users and helping them stay organized and productive.
+ *
+ * @author  Kiang Siong Boon
+ * @version 1.0
+ * @since   2024-01-29
+ */
 public class Main {
     private static final String LINE = "-------------------------------------------------";
 
@@ -115,7 +126,10 @@ public class Main {
                     System.out.println("Eg. todo borrow book");
                 }
                 else if(userInput.contains("deadline")){
-                    System.out.println("E.g. " + userInput + " book \\by 07/04/2024 1200");
+                    System.out.println("E.g. " + userInput + " return book /by 07/04/2024 1200");
+                }
+                else if(userInput.contains("event")){
+                    System.out.println("E.g. " + userInput + " loan book /from 07/04/2024 1200 /to 08/04/2024 1200");
                 }
                 else if(userInput.contains("find")){
                     System.out.println("E.g. " + userInput + " book");
@@ -125,6 +139,12 @@ public class Main {
         }
     }
 
+    /**
+     * Main method to start the TrackMe application.
+     * Calls the load() method to begin the application.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         try {
             Main.load();

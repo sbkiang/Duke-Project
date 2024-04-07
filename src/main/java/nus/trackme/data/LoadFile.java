@@ -10,6 +10,11 @@ public class LoadFile {
     private static final String filename = ".\\src\\main\\java\\nus\\trackme\\data\\storage.txt";
     private static final File tempFile = new File(".\\src\\main\\java\\nus\\trackme\\data\\tmp2.txt");
 
+    /**
+     * Check the storage.txt and add the existing task into the program.
+     *
+     * @param task The storage location designated for storing tasks.
+     */
     public LoadFile(UITask task){
 
         File originalFile = new File(filename);
