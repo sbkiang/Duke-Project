@@ -7,8 +7,8 @@ import java.io.*;
 
 public class LoadFile {
 
-    private static final String filename = ".\\src\\main\\java\\nus\\trackme\\data\\storage.txt";
-    private static final File tempFile = new File(".\\src\\main\\java\\nus\\trackme\\data\\tmp2.txt");
+    private static final String FILE_PATH = "storage.txt";
+    private static final File TEMP_FILE_PATH = new File("tmp.txt");
 
     /**
      * Check the storage.txt and add the existing task into the program.
@@ -17,19 +17,19 @@ public class LoadFile {
      */
     public LoadFile(UITask task){
 
-        File originalFile = new File(filename);
+        File originalFile = new File(FILE_PATH);
 
         if (originalFile.exists()) {
 
-            //Reference: https://stackoverflow.com/questions/54126403/show-stdout-in-file-and-in-console-with-system-setoutnew-printstreamnew-file
+            /* Reference: https://stackoverflow.com/questions/54126403/show-stdout-in-file-and-in-console-with-system-setoutnew-printstreamnew-file */
             /* Temporarily disable System.out.println */
             PrintStream originalOut = System.out;
             System.setOut(new PrintStream(new OutputStream() { public void write(int b) {}}));
 
 
-            //Duplicate the data
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile, true));
-                 BufferedReader reader = new BufferedReader(new FileReader(filename))){
+            /* Duplicate the data */
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH, true));
+                 BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -41,11 +41,11 @@ public class LoadFile {
             e.printStackTrace();
             }
 
-            //Delete original file
+            /* Delete original file */
             originalFile.delete();
 
-            //Load data
-            try (BufferedReader reader = new BufferedReader(new FileReader(tempFile))){
+            /* Load data */
+            try (BufferedReader reader = new BufferedReader(new FileReader(TEMP_FILE_PATH))){
                 String line;
                 int index = 0;
                 while ((line = reader.readLine()) != null) {
@@ -76,15 +76,15 @@ public class LoadFile {
                 e.printStackTrace();
             }
 
-            // Restore System.out.println
+            /* Restore System.out.println */
             System.setOut(originalOut);
 
 
 
         }
 
-        //Delete old tmp file
-        tempFile.delete();
+        /* Delete old tmp file */
+        TEMP_FILE_PATH.delete();
 
     }
 

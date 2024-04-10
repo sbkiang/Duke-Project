@@ -9,15 +9,14 @@ import java.io.IOException;
 
 public class FileIO {
 
-    private static final String filename = ".\\src\\main\\java\\nus\\trackme\\data\\storage.txt";
-
-    private static final File tempFile = new File(".\\src\\main\\java\\nus\\trackme\\data\\tmp.txt");
+    private static final String FILE_PATH = "storage.txt";
+    private static final File TEMP_FILE_PATH = new File("tmp.txt");
 
     /**
      * Create temporary text file.
      */
     public void CreateTempFile(){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH))) {
             // Empty the temporary file
             writer.write(""); // Write an empty string
         } catch (IOException e) {
@@ -61,13 +60,12 @@ public class FileIO {
 
     /**
      * To save the file into text file
-     *
      */
     public void SaveTask(String cmd, String task, String by, String from, String to){
 
         //Reference: "https://www.youtube.com/watch?v=ScUJx4aWRi0&ab_channel=CodingwithJohn"
         //File Format: command type, task, isDone, by, from, to
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))){
             writer.write(cmd + "," + task + "," + "0" + "," + by + "," + from + "," + to);
             writer.newLine();
         } catch (IOException e) {
@@ -78,14 +76,13 @@ public class FileIO {
 
     /**
      * To modify the existing task in text file
-     *
      */
     public void ModifyTask(String isDone, int index){
 
         CreateTempFile();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile, true));
-             BufferedReader reader = new BufferedReader(new FileReader(filename))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH, true));
+             BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){
 
             String line, tmp;
             int idx = 0;
@@ -108,11 +105,11 @@ public class FileIO {
             e.printStackTrace();
         }
 
-        File originalFile = new File(filename);
+        File originalFile = new File(FILE_PATH);
         if (originalFile.exists()) {
             originalFile.delete();
         }
-        tempFile.renameTo(originalFile);
+        TEMP_FILE_PATH.renameTo(originalFile);
 
     }
 
@@ -124,8 +121,8 @@ public class FileIO {
 
         CreateTempFile();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile, true));
-             BufferedReader reader = new BufferedReader(new FileReader(filename))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH, true));
+             BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){
 
             String line;
             int idx = 0;
@@ -144,11 +141,11 @@ public class FileIO {
             e.printStackTrace();
         }
 
-        File originalFile = new File(filename);
+        File originalFile = new File(FILE_PATH);
         if (originalFile.exists()) {
             originalFile.delete();
         }
-        tempFile.renameTo(originalFile);
+        TEMP_FILE_PATH.renameTo(originalFile);
     }
 
 }

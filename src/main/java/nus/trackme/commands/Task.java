@@ -1,6 +1,10 @@
 package nus.trackme.commands;
 import java.time.LocalDate;
 
+/**
+ * Represents a task.
+ *
+ */
 public class Task {
     protected String description;
     protected boolean isDone;

@@ -11,13 +11,8 @@ import java.util.regex.Pattern;
 
 public class ParseDateTime {
 
-    //Expected date and time format
-    //private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-    //private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
-
-    // Define an array of possible date and time formats
-    private static final String[] dateFormats = {"d/M/yyyy", "d/M/yy", "dd/MM/yyyy", "dd/MM/yy"};
-    private static final String[] timeFormats = {"HHmm", "H:mm"};
+    private static final String[] DATE_FORMATS = {"d/M/yyyy", "d/M/yy", "dd/MM/yyyy", "dd/MM/yy"};
+    private static final String[] TIME_FORMATS = {"HHmm", "H:mm"};
 
     protected String dateTime, parsedDate, parsedTime;
 
@@ -41,8 +36,8 @@ public class ParseDateTime {
         LocalDate deadlineDate = null;
         LocalTime deadlineTime = null;
 
-        for(String dateFormat: dateFormats){
-            for (String timeFormat : timeFormats) {
+        for(String dateFormat: DATE_FORMATS){
+            for (String timeFormat : TIME_FORMATS) {
                 try {
                     // Parse the deadline string into LocalDate and LocalTime
                     deadlineDate = LocalDate.parse(parsedDate, DateTimeFormatter.ofPattern(dateFormat));
@@ -71,8 +66,8 @@ public class ParseDateTime {
     }
 
     public boolean isCompare(String endDate, String endTime){
-        for (String dateFormat : dateFormats) {
-            for (String timeFormat : timeFormats) {
+        for (String dateFormat : DATE_FORMATS) {
+            for (String timeFormat : TIME_FORMATS) {
                 try {
                     LocalDateTime startDateTime = LocalDateTime.parse(this.parsedDate + " " + this.parsedTime, DateTimeFormatter.ofPattern(dateFormat + " " + timeFormat));
                     LocalDateTime endDateTime = LocalDateTime.parse(endDate + " " + endTime, DateTimeFormatter.ofPattern(dateFormat + " " + timeFormat));

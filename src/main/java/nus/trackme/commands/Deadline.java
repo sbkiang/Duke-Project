@@ -3,6 +3,10 @@ import nus.trackme.parser.ParseDateTime;
 
 import java.time.LocalDate;
 
+/**
+ * Represents deadline task.
+ *
+ */
 public class Deadline extends Task {
 
     protected String by;

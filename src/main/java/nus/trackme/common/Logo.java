@@ -1,8 +1,12 @@
 package nus.trackme.common;
 
 public class Logo {
-    //Design below adapted from "https://patorjk.com/software/taag/#p=display&f=Blocks&t=TrackMe"
 
+    /**
+     * Logo Design
+     *
+     * Design below adapted from "https://patorjk.com/software/taag/#p=display&f=Blocks&t=TrackMe
+     */
     public static final String LOGO = ".----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. \n"
             + "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |\n"
             + "| |  _________   | || |  _______     | || |      __      | || |     ______   | || |  ___  ____   | || | ____    ____ | || |  _________   | |\n"

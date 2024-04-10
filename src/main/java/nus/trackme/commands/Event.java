@@ -4,6 +4,10 @@ import nus.trackme.parser.ParseDateTime;
 
 import java.time.LocalDate;
 
+/**
+ * Represents event task.
+ *
+ */
 public class Event extends Task {
 
     protected String from;

@@ -13,25 +13,42 @@ import java.util.ArrayList;
 public class UITask {
     private static final int MAX_SIZE = 100;
 
-    //private Task[] tasks;
-    private final ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
 
     private int size;
 
+    /**
+     * Construct an ArrayList to store user task.
+     *
+     */
     public UITask(){
         tasks = new ArrayList<>();
         size = 0;
     }
 
+    /**
+     * Lists all tasks in the TaskList to the user.
+     *
+     */
     public void listTasks(){
-        for(int index=0; index < tasks.size(); index++){
-            if(tasks.get(index) == null){
-                break;
+        if(tasks.size() == 0){
+            System.out.println("Currently, there is no task in TaskList.");
+        }
+        else{
+            for(int index=0; index < tasks.size(); index++){
+                if(tasks.get(index) == null){
+                    break;
+                }
+                System.out.println((index+1) + ". " + tasks.get(index).toString());
             }
-            System.out.println((index+1) + ". " + tasks.get(index).toString());
         }
     }
 
+    /**
+     * Mark the task as completed.
+     *
+     * @param index To pinpoint which task to mark.
+     */
     public void markTaskAsDone(int index){
         tasks.get(index).markAsDone();
         new FileIO("MARK", "1", index);
@@ -39,6 +56,11 @@ public class UITask {
         System.out.println(tasks.get(index).toString());
     }
 
+    /**
+     * Unmark the task as uncompleted.
+     *
+     * @param index To pinpoint which task to unmark.
+     */
     public void unmarkTaskAsDone(int index){
         tasks.get(index).unmarkAsDone();
         new FileIO("UNMARK", "0", index);
@@ -46,6 +68,11 @@ public class UITask {
         System.out.println(tasks.get(index).toString());
     }
 
+    /**
+     * Delete the task in TaskList.
+     *
+     * @param index To pinpoint which task to delete.
+     */
     public void deleteTask(int index){
         System.out.println("Noted. I've removed this task");
         System.out.println(tasks.get(index).toString());
@@ -55,6 +82,11 @@ public class UITask {
         System.out.println("Now you have " + size + " tasks in the list");
     }
 
+    /**
+     * Add todo task into TaskList.
+     *
+     * @param task Task description.
+     */
     public void toDoTask(String task){
         if(!task.isEmpty()){
             tasks.add(new ToDo(task));
@@ -66,6 +98,12 @@ public class UITask {
         }
     }
 
+    /**
+     * Add deadline task into TaskList.
+     *
+     * @param task Task description.
+     * @param by Task to be completed by when.
+     */
     public void deadlineTask(String task, String by){
         ParseDateTime dateTime = new ParseDateTime(by);
         if(dateTime.isCorrect()){
@@ -78,6 +116,13 @@ public class UITask {
         }
     }
 
+    /**
+     * Add event task into TaskList.
+     *
+     * @param task Task description.
+     * @param from Task start from when.
+     * @param to Task end to when.
+     */
     public void eventTask(String task, String from, String to) {
         ParseDateTime dateTime1 = new ParseDateTime(from);
         ParseDateTime dateTime2 = new ParseDateTime(to);
@@ -94,6 +139,11 @@ public class UITask {
         }
     }
 
+    /**
+     * Search the specific task in TaskList.
+     *
+     * @param arg Keyword to search in TaskList.
+     */
     public void findTask(String arg){
         if(!arg.isEmpty()) {
             boolean found = false;
@@ -116,6 +166,12 @@ public class UITask {
         }
     }
 
+    /**
+     * Remind the user the upcoming task.
+     *
+     * @param currentDate Current date.
+     * @param reminderDays Remaining day left in a week.
+     */
     public void remindUpcomingTask(LocalDate currentDate, int reminderDays){
         boolean found = false;
 
@@ -135,10 +191,19 @@ public class UITask {
         }
     }
 
+    /**
+     * Return the number of Tasks in TaskList.
+     *
+     * @return
+     */
     public int taskSize(){
         return size;
     }
 
+    /**
+     * End the program.
+     *
+     */
     public void endTaskProgram(){
         System.out.println("Bye. Hope to see you again");
         System.exit(0);
