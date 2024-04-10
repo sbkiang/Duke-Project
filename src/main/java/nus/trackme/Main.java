@@ -126,13 +126,13 @@ public class Main {
                     System.out.println("Eg. todo borrow book");
                 }
                 else if(userInput.contains("deadline")){
-                    System.out.println("E.g. " + userInput + " return book /by 07/04/2024 1200");
+                    System.out.println("E.g. deadline return book /by 07/04/2024 1200");
                 }
                 else if(userInput.contains("event")){
-                    System.out.println("E.g. " + userInput + " loan book /from 07/04/2024 1200 /to 08/04/2024 1200");
+                    System.out.println("E.g. event loan book /from 07/04/2024 1200 /to 08/04/2024 1200");
                 }
                 else if(userInput.contains("find")){
-                    System.out.println("E.g. " + userInput + " book");
+                    System.out.println("E.g. find book");
                 }
                 System.out.println(LINE);
             }
