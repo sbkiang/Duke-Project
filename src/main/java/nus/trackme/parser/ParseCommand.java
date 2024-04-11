@@ -63,4 +63,26 @@ public class ParseCommand {
         return arg;
     }
 
+    public String [] tagCommand(){
+        Pattern pattern = Pattern.compile("tag\\s(\\d+)\\s(.*?)");
+        Matcher matcher = pattern.matcher(inputCommands);
+        if(matcher.matches()){
+            idx = matcher.group(1);
+            arg = matcher.group(2);
+        }
+
+        return new String[]{idx, arg};
+    }
+
+    public String [] untagCommand(){
+        Pattern pattern = Pattern.compile("untag\\s(\\d+)\\s(.*?)");
+        Matcher matcher = pattern.matcher(inputCommands);
+        if(matcher.matches()){
+            idx = matcher.group(1);
+            arg = matcher.group(2);
+        }
+
+        return new String[]{idx, arg};
+    }
+
 }

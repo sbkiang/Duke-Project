@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class UITask {
     private static final int MAX_SIZE = 100;
 
+
+
     private ArrayList<Task> tasks;
 
     private int size;
@@ -90,6 +92,7 @@ public class UITask {
     public void toDoTask(String task){
         if(!task.isEmpty()){
             tasks.add(new ToDo(task));
+
             new FileIO("T", task, "-", "-", "-");
             size++;
             System.out.println("Got it. I've added this task:");
@@ -189,6 +192,20 @@ public class UITask {
         if(found){
             System.out.println("-------------------------------------------------");
         }
+    }
+
+    public void tagTask(int index, String tag){
+        tasks.get(index).addTag(tag);
+        new FileIO("TAG", index, tag);
+        System.out.println("Nice! I've tag this task:");
+        System.out.println(tasks.get(index).toString());
+    }
+
+    public void untagTask(int index, String tag){
+        tasks.get(index).removeTag(tag);
+        new FileIO("UNTAG", index, tag);
+        System.out.println("Nice! I've untag this task:");
+        System.out.println(tasks.get(index).toString());
     }
 
     /**

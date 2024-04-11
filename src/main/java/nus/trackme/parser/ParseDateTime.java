@@ -1,14 +1,17 @@
 package nus.trackme.parser;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Extract the date and time from various formats like d/M/yyyy HHmm or dd/MM/yyyy H:mm
+ * and convert them to the standard date and time format: MMM dd yyyy.
+ * Additionally, compare the date/times to ensure the 'from' and 'to' date/times are in the correct timeline.
+ */
 public class ParseDateTime {
 
     private static final String[] DATE_FORMATS = {"d/M/yyyy", "d/M/yy", "dd/MM/yyyy", "dd/MM/yy"};

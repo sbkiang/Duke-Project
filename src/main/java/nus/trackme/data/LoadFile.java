@@ -26,6 +26,8 @@ public class LoadFile {
             PrintStream originalOut = System.out;
             System.setOut(new PrintStream(new OutputStream() { public void write(int b) {}}));
 
+            /*Delete any tmp file that still exist*/
+            TEMP_FILE_PATH.delete();
 
             /* Duplicate the data */
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH, true));
@@ -67,6 +69,13 @@ public class LoadFile {
 
                     if(parts[2].equals("1")){
                         task.markTaskAsDone(index);
+                    }
+
+                    if(!parts[6].equals("-")){
+                        String [] tags = parts[6].split("\\|");
+                        for(String tag:tags){
+                            task.tagTask(index, tag);
+                        }
                     }
 
                     index++;

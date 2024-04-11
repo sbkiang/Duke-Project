@@ -1,27 +1,52 @@
 package nus.trackme.data;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import nus.trackme.commands.Task;
+
+import java.io.*;
+import java.util.List;
 
 public class FileIO {
 
-    private static final String FILE_PATH = "storage.txt";
-    private static final File TEMP_FILE_PATH = new File("tmp.txt");
+    private final String FILE_PATH = "storage.txt";
+    private final File TEMP_FILE_PATH = new File("tmp.txt");
 
     /**
      * Create temporary text file.
      */
     public void CreateTempFile(){
+
+        TEMP_FILE_PATH.delete();
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH))) {
             // Empty the temporary file
             writer.write(""); // Write an empty string
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Replace temporary File to Original File.
+     */
+    public void replaceFile(String type){
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(TEMP_FILE_PATH));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+        catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (TEMP_FILE_PATH.exists())
+            assert TEMP_FILE_PATH.delete() : "Failed to delete the original file: " + FILE_PATH + " on " + type + " method";
     }
 
     /**
@@ -59,14 +84,29 @@ public class FileIO {
     }
 
     /**
+     * Constructs to use tag or untag method on existing task in text file.
+     * @param cmd
+     * @param index
+     * @param tag
+     */
+    public FileIO(String cmd, int index, String tag){
+        if(cmd.equals("TAG")){
+            TagTask(index, tag);
+        }
+        else{
+            UntagTask(index, tag);
+        }
+    }
+
+    /**
      * To save the file into text file
      */
     public void SaveTask(String cmd, String task, String by, String from, String to){
 
         //Reference: "https://www.youtube.com/watch?v=ScUJx4aWRi0&ab_channel=CodingwithJohn"
-        //File Format: command type, task, isDone, by, from, to
+        //File Format: command type, task, isDone, by, from, to, tag
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))){
-            writer.write(cmd + "," + task + "," + "0" + "," + by + "," + from + "," + to);
+            writer.write(cmd + "," + task + "," + "0" + "," + by + "," + from + "," + to + ",-");
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,7 +121,7 @@ public class FileIO {
 
         CreateTempFile();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH, true));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
              BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){
 
             String line, tmp;
@@ -105,11 +145,7 @@ public class FileIO {
             e.printStackTrace();
         }
 
-        File originalFile = new File(FILE_PATH);
-        if (originalFile.exists()) {
-            originalFile.delete();
-        }
-        TEMP_FILE_PATH.renameTo(originalFile);
+        replaceFile("Modify");
 
     }
 
@@ -141,11 +177,88 @@ public class FileIO {
             e.printStackTrace();
         }
 
-        File originalFile = new File(FILE_PATH);
-        if (originalFile.exists()) {
-            originalFile.delete();
+        replaceFile("Delete");
+    }
+
+    public void TagTask(int index, String tag){
+
+        CreateTempFile();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
+             BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){
+
+            String line, tmp;
+            int idx = 0;
+
+            while ((line = reader.readLine()) != null) {
+                if(idx == index){
+                    tmp = line;
+                    String[] parts = tmp.split(",");
+                    if(parts[6].equals("-")){
+                        parts[6] = tag + "|";
+                    }
+                    else{
+                        parts[6] = parts[6] + tag + "|";
+                    }
+                    line = String.join(",", parts);
+                }
+                idx++;
+
+                writer.write(line);
+                writer.newLine();
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        TEMP_FILE_PATH.renameTo(originalFile);
+
+        replaceFile("Tag");
+
+    }
+
+    public void UntagTask(int index, String untag){
+
+        CreateTempFile();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
+             BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){
+
+            String line, tmp;
+            int idx = 0;
+
+            while ((line = reader.readLine()) != null) {
+                if(idx == index){
+                    tmp = line;
+                    String[] parts = tmp.split(",");
+                    String[] tags = parts[6].split("\\|");
+                    parts[6] = "-";
+                    for(String tag: tags){
+                        if(!tag.equals(untag)){
+                            if(parts[6].equals("-")){
+                                parts[6] = tag + "|";
+                            }
+                            else{
+                                parts[6] = parts[6] + tag + "|";
+                            }
+                        }
+                    }
+
+                    line = String.join(",", parts);
+                }
+                idx++;
+
+                writer.write(line);
+                writer.newLine();
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        replaceFile("Tag");
+
     }
 
 }

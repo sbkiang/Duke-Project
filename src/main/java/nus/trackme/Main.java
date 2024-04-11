@@ -103,6 +103,14 @@ public class Main {
                         arg = parseCommand.findCommand();
                         task.findTask(arg);
                         break;
+                    case TAG:
+                        parsedInput = parseCommand.tagCommand();
+                        task.tagTask(Integer.parseInt(parsedInput[0]) - 1, parsedInput[1]);
+                        break;
+                    case UNTAG:
+                        parsedInput = parseCommand.untagCommand();
+                        task.untagTask(Integer.parseInt(parsedInput[0]) - 1, parsedInput[1]);
+                        break;
                     case BYE:
                         task.endTaskProgram();
                         break;
@@ -148,7 +156,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             Main.load();
-            Main.start();
+           Main.start();
         } catch (TrackMeException e) {
             throw new RuntimeException(e);
         }
