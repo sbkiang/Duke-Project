@@ -1,9 +1,6 @@
 package nus.trackme.data;
 
-import nus.trackme.commands.Task;
-
 import java.io.*;
-import java.util.List;
 
 public class FileIO {
 

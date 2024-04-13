@@ -1,5 +1,5 @@
 package nus.trackme.commands;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,7 +38,7 @@ public class Task {
         tags.remove("#"+tag);
     }
 
-    public boolean isUpcoming(LocalDate currentDate, int reminderDays){
+    public boolean isUpcoming(LocalDateTime currentDate, int reminderDays, int reminderHours){
         return false;
     }
 

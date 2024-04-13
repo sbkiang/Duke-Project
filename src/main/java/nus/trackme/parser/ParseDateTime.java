@@ -88,11 +88,11 @@ public class ParseDateTime {
         return false;
     }
 
-    public LocalDate deadlineDate(String dateTime){
+    public LocalDateTime deadlineDT(String dateTime){
         String[] parts = dateTime.split(" ");
-        parsedDate = parts[0] + " " + parts[1] + " " + parts[2];
-        LocalDate date = LocalDate.parse(parsedDate, DateTimeFormatter.ofPattern("MMM dd yyyy"));
-        return LocalDate.parse(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        parsedDate = parts[0] + " " + parts[1] + " " + parts[2] + " " + parts[3];
+        LocalDateTime dt = LocalDateTime.parse(parsedDate, DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"));
+        return dt;
     }
 
     public String toString(){
@@ -106,4 +106,5 @@ public class ParseDateTime {
     public String time(){
         return this.parsedTime;
     }
+
 }

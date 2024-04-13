@@ -1,8 +1,7 @@
 package nus.trackme.commands;
 
 import nus.trackme.parser.ParseDateTime;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Represents event task.
@@ -20,12 +19,13 @@ public class Event extends Task {
 
     }
 
-    public boolean isUpcoming(LocalDate currentDate, int reminderDays){
+    @Override
+    public boolean isUpcoming(LocalDateTime currentDT, int reminderDays, int reminderHours){
         //Parse the date string
         ParseDateTime date = new ParseDateTime(to);
-        LocalDate deadlineDate = date.deadlineDate(to);
-        LocalDate reminderDate = currentDate.plusDays(reminderDays);
-        return !deadlineDate.isAfter(reminderDate) && deadlineDate.isAfter(currentDate);
+        LocalDateTime deadlineDT = date.deadlineDT(to);
+        LocalDateTime reminderDT = currentDT.plusDays(reminderDays).plusHours(reminderHours);
+        return (!deadlineDT.isAfter(reminderDT) || deadlineDT.equals(reminderDT) || deadlineDT.toLocalDate().isEqual(reminderDT.toLocalDate())) && (deadlineDT.isAfter(currentDT) || deadlineDT.equals(currentDT) || deadlineDT.toLocalDate().isEqual(currentDT.toLocalDate()));
     }
 
     @Override

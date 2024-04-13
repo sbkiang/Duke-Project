@@ -9,7 +9,8 @@ import nus.trackme.exception.TrackMeException;
 import static nus.trackme.common.Logo.LOGO;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Scanner;
 
@@ -38,19 +39,22 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String userInput = null;
 
-        System.out.println(LOGO);
-        System.out.println("Hello! I'm TrackMe");
         if(task.taskSize() != 0){
-            // Get the current date
-            LocalDate currentDate = LocalDate.now();
-            // Calculate the end of the current week (Sunday)
-            LocalDate endOfWeek = currentDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-            // Calculate the number of days left in the current week
-            long daysLeftInWeek = currentDate.until(endOfWeek).getDays();
-            // Calculate the reminder period based on the days left in the current week
-            int reminderDays = (int) Math.min(daysLeftInWeek, 7); // Maximum reminder period is 7 days
+            /* Get the current date and time */
+            LocalDateTime currentDT = LocalDateTime.now();
 
-            task.remindUpcomingTask(currentDate, reminderDays);
+            /* Calculate the end of the current week (Sunday) */
+            LocalDateTime endOfWeek = currentDT.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+            /* Calculate the number of days and time left in the current week */
+            long daysLeftInWeek = ChronoUnit.DAYS.between(currentDT, endOfWeek);
+            long hoursLeftInWeek = ChronoUnit.HOURS.between(currentDT, endOfWeek);
+
+            /* Calculate the reminder period based on the days left in the current week */
+            int reminderDays = (int) Math.min(daysLeftInWeek, 7); // Maximum reminder period is 7 days
+            int reminderHours = (int) Math.min(hoursLeftInWeek, 7 * 24); // Maximum reminder period in hours is 7 days * 24 hours/day
+
+            task.remindUpcomingTask(currentDT, reminderDays, reminderHours);
         }
 
         System.out.println("What can I do for you?");
@@ -155,8 +159,10 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
+            System.out.println(LOGO);
+            System.out.println("Hello! I'm TrackMe");
             Main.load();
-           Main.start();
+            Main.start();
         } catch (TrackMeException e) {
             throw new RuntimeException(e);
         }

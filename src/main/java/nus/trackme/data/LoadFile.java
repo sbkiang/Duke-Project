@@ -1,5 +1,6 @@
 package nus.trackme.data;
 
+import nus.trackme.parser.ParseDateTime;
 import nus.trackme.ui.UITask;
 import nus.trackme.common.EnumList;
 
@@ -9,6 +10,8 @@ public class LoadFile {
 
     private static final String FILE_PATH = "storage.txt";
     private static final File TEMP_FILE_PATH = new File("tmp.txt");
+
+    private boolean isExpired = false;
 
     /**
      * Check the storage.txt and add the existing task into the program.
@@ -57,10 +60,60 @@ public class LoadFile {
 
                     switch (loadCMD){
                         case D:
-                            task.deadlineTask(parts[1], parts[3]);
+                            ParseDateTime dateBy = new ParseDateTime(parts[3]);
+                            if(dateBy.isCorrect()){
+                                task.deadlineTask(parts[1], parts[3]);
+                            }
+                            else{
+                                System.setOut(originalOut);
+                                if(!isExpired){
+                                    System.out.println("Expired Task: Removed all from Task List");
+                                    System.out.println("-------------------------------------------------");
+                                }
+
+                                if(!parts[6].equals("-")){
+                                    String [] tags = parts[6].split("\\|");
+                                    String tagdesc = "#";
+                                    for(String tag : tags){
+                                        tagdesc = tagdesc + tag;
+                                    }
+                                    System.out.println("[D][ ] " + parts[1] + " " + tagdesc + " (by: " + parts[3] + ")");
+                                }
+                                else{
+                                    System.out.println("[D][ ] " + parts[1] + " (by: " + parts[3] + ")");
+                                }
+
+                                isExpired = true;
+                                System.setOut(new PrintStream(new OutputStream() { public void write(int b) {}}));
+                            }
                             break;
                         case E:
-                            task.eventTask(parts[1], parts[4], parts[5]);
+                            ParseDateTime dateTo = new ParseDateTime(parts[5]);
+                            if(dateTo.isCorrect()){
+                                task.eventTask(parts[1], parts[4], parts[5]);
+                            }
+                            else{
+                                System.setOut(originalOut);
+                                if(!isExpired){
+                                    System.out.println("Expired Task: Removed all from Task List");
+                                    System.out.println("-------------------------------------------------");
+                                }
+
+                                if(!parts[6].equals("-")){
+                                    String [] tags = parts[6].split("\\|");
+                                    String tagdesc = "#";
+                                    for(String tag : tags){
+                                        tagdesc = tagdesc + tag;
+                                    }
+                                    System.out.println("[E][ ] " + parts[1] + " " + tagdesc + " (from: " + parts[4] + " to: " + parts[5] + ")");
+                                }
+                                else{
+                                    System.out.println("[E][ ] " + parts[1] + " (from: " + parts[4] + " to: " + parts[5] + ")");
+                                }
+
+                                isExpired = true;
+                                System.setOut(new PrintStream(new OutputStream() { public void write(int b) {}}));
+                            }
                             break;
                         case T:
                             task.toDoTask(parts[1]);
@@ -81,13 +134,17 @@ public class LoadFile {
                     index++;
                 }
 
+                if(isExpired){
+                    System.setOut(originalOut);
+                    System.out.println("-------------------------------------------------");
+                }
+
             }catch (IOException e) {
                 e.printStackTrace();
             }
 
             /* Restore System.out.println */
             System.setOut(originalOut);
-
 
 
         }

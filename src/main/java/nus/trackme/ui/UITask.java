@@ -7,7 +7,7 @@ import nus.trackme.commands.Deadline;
 import nus.trackme.data.FileIO;
 import nus.trackme.parser.ParseDateTime;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class UITask {
@@ -21,7 +21,6 @@ public class UITask {
 
     /**
      * Construct an ArrayList to store user task.
-     *
      */
     public UITask(){
         tasks = new ArrayList<>();
@@ -30,7 +29,6 @@ public class UITask {
 
     /**
      * Lists all tasks in the TaskList to the user.
-     *
      */
     public void listTasks(){
         if(tasks.size() == 0){
@@ -48,7 +46,6 @@ public class UITask {
 
     /**
      * Mark the task as completed.
-     *
      * @param index To pinpoint which task to mark.
      */
     public void markTaskAsDone(int index){
@@ -60,7 +57,6 @@ public class UITask {
 
     /**
      * Unmark the task as uncompleted.
-     *
      * @param index To pinpoint which task to unmark.
      */
     public void unmarkTaskAsDone(int index){
@@ -72,7 +68,6 @@ public class UITask {
 
     /**
      * Delete the task in TaskList.
-     *
      * @param index To pinpoint which task to delete.
      */
     public void deleteTask(int index){
@@ -86,7 +81,6 @@ public class UITask {
 
     /**
      * Add todo task into TaskList.
-     *
      * @param task Task description.
      */
     public void toDoTask(String task){
@@ -103,7 +97,6 @@ public class UITask {
 
     /**
      * Add deadline task into TaskList.
-     *
      * @param task Task description.
      * @param by Task to be completed by when.
      */
@@ -121,7 +114,6 @@ public class UITask {
 
     /**
      * Add event task into TaskList.
-     *
      * @param task Task description.
      * @param from Task start from when.
      * @param to Task end to when.
@@ -144,7 +136,6 @@ public class UITask {
 
     /**
      * Search the specific task in TaskList.
-     *
      * @param arg Keyword to search in TaskList.
      */
     public void findTask(String arg){
@@ -171,15 +162,15 @@ public class UITask {
 
     /**
      * Remind the user the upcoming task.
-     *
      * @param currentDate Current date.
-     * @param reminderDays Remaining day left in a week.
+     * @param reminderDays Remaining days left in a week.
+     * @param reminderHours Remaining hours left in a week.
      */
-    public void remindUpcomingTask(LocalDate currentDate, int reminderDays){
+    public void remindUpcomingTask(LocalDateTime currentDate, int reminderDays, int reminderHours){
         boolean found = false;
 
         for(Task task: tasks){
-            if((task.toString().contains("[E]") || task.toString().contains("[D]")) && !task.isDone() && task.isUpcoming(currentDate, reminderDays)){
+            if((task.toString().contains("[E]") || task.toString().contains("[D]")) && !task.isDone() && task.isUpcoming(currentDate, reminderDays, reminderHours)){
                 if(!found){
                     System.out.println("Reminder: Upcoming Task for this week");
                     System.out.println("-------------------------------------------------");
@@ -210,7 +201,6 @@ public class UITask {
 
     /**
      * Return the number of Tasks in TaskList.
-     *
      * @return
      */
     public int taskSize(){
