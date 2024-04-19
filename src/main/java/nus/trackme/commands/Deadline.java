@@ -23,11 +23,17 @@ public class Deadline extends Task {
 
         String[] parts = by.split(" ");
 
-        if(parts.length == 4){
+        boolean upcoming = false;
+
+
+
+
+        if(parts.length == 5){
             //Parse the date string
             ParseDateTime date = new ParseDateTime(by);
             LocalDateTime deadlineDT = date.deadlineDT(by);
             LocalDateTime reminderDT = currentDT.plusDays(reminderDays).plusHours(reminderHours);
+
             return (!deadlineDT.isAfter(reminderDT) || deadlineDT.equals(reminderDT) || deadlineDT.toLocalDate().isEqual(reminderDT.toLocalDate())) && (deadlineDT.isAfter(currentDT) || deadlineDT.equals(currentDT) || deadlineDT.toLocalDate().isEqual(currentDT.toLocalDate()));
 
         }

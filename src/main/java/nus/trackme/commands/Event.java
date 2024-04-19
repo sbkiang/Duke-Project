@@ -25,11 +25,12 @@ public class Event extends Task {
     public boolean isUpcoming(LocalDateTime currentDT, int reminderDays, int reminderHours){
         String[] parts = to.split(" ");
 
-        if(parts.length == 4){
+        if(parts.length == 5){
             //Parse the date string
             ParseDateTime date = new ParseDateTime(to);
             LocalDateTime deadlineDT = date.deadlineDT(to);
             LocalDateTime reminderDT = currentDT.plusDays(reminderDays).plusHours(reminderHours);
+
             return (!deadlineDT.isAfter(reminderDT) || deadlineDT.equals(reminderDT) || deadlineDT.toLocalDate().isEqual(reminderDT.toLocalDate())) && (deadlineDT.isAfter(currentDT) || deadlineDT.equals(currentDT) || deadlineDT.toLocalDate().isEqual(currentDT.toLocalDate()));
 
         }
@@ -40,7 +41,9 @@ public class Event extends Task {
             LocalDate deadlineD = date.deadlineD(to);
             LocalDate reminderD = currentD.plusDays(reminderDays);
 
-            return(!deadlineD.isAfter(reminderD) || deadlineD.isEqual(reminderD) && deadlineD.isAfter(currentD) || deadlineD.isEqual(currentD));
+
+
+            return ((!deadlineD.isAfter(reminderD) || deadlineD.isEqual(reminderD)) && (deadlineD.isAfter(currentD) || deadlineD.isEqual(currentD)));
 
         }
         else{
