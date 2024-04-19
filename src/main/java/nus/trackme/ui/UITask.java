@@ -11,9 +11,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class UITask {
-    private static final int MAX_SIZE = 100;
-
-
 
     private ArrayList<Task> tasks;
 

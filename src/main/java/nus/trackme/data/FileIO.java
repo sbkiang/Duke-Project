@@ -43,7 +43,7 @@ public class FileIO {
         }
 
         if (TEMP_FILE_PATH.exists())
-            assert TEMP_FILE_PATH.delete() : "Failed to delete the original file: " + FILE_PATH + " on " + type + " method";
+            assert TEMP_FILE_PATH.delete() : "Failed to delete the temporary file: " + FILE_PATH + " on " + type + " method";
     }
 
     /**
@@ -116,7 +116,7 @@ public class FileIO {
      */
     public void ModifyTask(String isDone, int index){
 
-        CreateTempFile();
+       CreateTempFile();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH));
              BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))){

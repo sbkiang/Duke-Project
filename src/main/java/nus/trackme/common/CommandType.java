@@ -1,6 +1,6 @@
 package nus.trackme.common;
 
-public class EnumList {
+public class CommandType {
 
     /**
      * Define a set of commands in the program.
@@ -9,10 +9,5 @@ public class EnumList {
         LIST, TODO, EVENT, DEADLINE, DELETE, MARK, UNMARK, BYE, FIND, TAG, UNTAG
     }
 
-    /**
-     * Define a type of task in the program.
-     */
-    public enum TYPE{
-        D, E, T
-    }
+
 }

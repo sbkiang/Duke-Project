@@ -1,15 +1,15 @@
 package nus.trackme.data;
 
+import nus.trackme.common.TaskType;
 import nus.trackme.parser.ParseDateTime;
 import nus.trackme.ui.UITask;
-import nus.trackme.common.EnumList;
 
 import java.io.*;
 
 public class LoadFile {
 
-    private static final String FILE_PATH = "storage.txt";
-    private static final File TEMP_FILE_PATH = new File("tmp.txt");
+    private final String FILE_PATH = "storage.txt";
+    private final File TEMP_FILE_PATH = new File("tmp.txt");
 
     private boolean isExpired = false;
 
@@ -56,7 +56,7 @@ public class LoadFile {
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(",");
 
-                    EnumList.TYPE loadCMD = EnumList.TYPE.valueOf(parts[0]);
+                    TaskType.TYPE loadCMD = TaskType.TYPE.valueOf(parts[0]);
 
                     switch (loadCMD){
                         case D:

@@ -1,6 +1,6 @@
 package nus.trackme;
 
-import nus.trackme.common.EnumList;
+import nus.trackme.common.CommandType;
 import nus.trackme.data.LoadFile;
 import nus.trackme.parser.ParseCommand;
 import nus.trackme.ui.UITask;
@@ -25,13 +25,14 @@ import java.util.Scanner;
  * @version 1.0
  * @since   2024-01-29
  */
-public class Main {
+public class TrackMe {
     private static final String LINE = "-------------------------------------------------";
 
-    private static UITask task = new UITask();
+    private static UITask command = new UITask();
+
 
     private static void load() throws TrackMeException{
-        new LoadFile(task);
+        new LoadFile(command);
     }
 
     private static void start() throws TrackMeException {
@@ -39,7 +40,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String userInput = null;
 
-        if(task.taskSize() != 0){
+        if(command.taskSize() != 0){
             /* Get the current date and time */
             LocalDateTime currentDT = LocalDateTime.now();
 
@@ -54,7 +55,7 @@ public class Main {
             int reminderDays = (int) Math.min(daysLeftInWeek, 7); // Maximum reminder period is 7 days
             int reminderHours = (int) Math.min(hoursLeftInWeek, 7 * 24); // Maximum reminder period in hours is 7 days * 24 hours/day
 
-            task.remindUpcomingTask(currentDT, reminderDays, reminderHours);
+            command.remindUpcomingTask(currentDT, reminderDays, reminderHours);
         }
 
         System.out.println("What can I do for you?");
@@ -73,50 +74,50 @@ public class Main {
 
                 ParseCommand parseCommand = new ParseCommand(userInput);
 
-                EnumList.CMD userCMD = EnumList.CMD.valueOf(parseCommand.mainCommand());
+                CommandType.CMD userCMD = CommandType.CMD.valueOf(parseCommand.mainCommand());
 
                 String arg;
                 String [] parsedInput;
 
                 switch (userCMD){
                     case LIST:
-                        task.listTasks();
+                        command.listTasks();
                         break;
                     case TODO:
                         arg = parseCommand.todoCommand();
-                        task.toDoTask(arg);
+                        command.toDoTask(arg);
                         break;
                     case EVENT:
                         parsedInput = parseCommand.EventCommand();
-                        task.eventTask(parsedInput[0], parsedInput[1], parsedInput[2]);
+                        command.eventTask(parsedInput[0], parsedInput[1], parsedInput[2]);
                         break;
                     case DEADLINE:
                         parsedInput = parseCommand.DeadlineCommand();
-                        task.deadlineTask(parsedInput[0], parsedInput[1]);
+                        command.deadlineTask(parsedInput[0], parsedInput[1]);
                         break;
                     case MARK:
-                        task.markTaskAsDone(Integer.parseInt(parseCommand.indexCommand()) - 1);
+                        command.markTaskAsDone(Integer.parseInt(parseCommand.indexCommand()) - 1);
                         break;
                     case UNMARK:
-                        task.unmarkTaskAsDone(Integer.parseInt(parseCommand.indexCommand()) - 1);
+                        command.unmarkTaskAsDone(Integer.parseInt(parseCommand.indexCommand()) - 1);
                         break;
                     case DELETE:
-                        task.deleteTask(Integer.parseInt(parseCommand.indexCommand()) - 1);
+                        command.deleteTask(Integer.parseInt(parseCommand.indexCommand()) - 1);
                         break;
                     case FIND:
                         arg = parseCommand.findCommand();
-                        task.findTask(arg);
+                        command.findTask(arg);
                         break;
                     case TAG:
                         parsedInput = parseCommand.tagCommand();
-                        task.tagTask(Integer.parseInt(parsedInput[0]) - 1, parsedInput[1]);
+                        command.tagTask(Integer.parseInt(parsedInput[0]) - 1, parsedInput[1]);
                         break;
                     case UNTAG:
                         parsedInput = parseCommand.untagCommand();
-                        task.untagTask(Integer.parseInt(parsedInput[0]) - 1, parsedInput[1]);
+                        command.untagTask(Integer.parseInt(parsedInput[0]) - 1, parsedInput[1]);
                         break;
                     case BYE:
-                        task.endTaskProgram();
+                        command.endTaskProgram();
                         break;
                 }
                 System.out.println(LINE);
@@ -130,7 +131,14 @@ public class Main {
                 System.out.println("Please put index number. E.g. " + userInput + " 1");
                 System.out.println(LINE);
             } catch (IndexOutOfBoundsException e){ /*  */
-                System.out.println("Task is currently empty. Please add your task first");
+                if(command.taskSize() == 0){
+                    System.out.println("Task is currently empty. Please add your task first.");
+                }
+                else{
+                    System.out.println("Please choose valid index in current task list.");
+                    System.out.println(LINE);
+                    command.listTasks();
+                }
                 System.out.println(LINE);
             } catch (NullPointerException e){
                 System.out.println("Incomplete Command: " + userInput);
@@ -161,8 +169,8 @@ public class Main {
         try {
             System.out.println(LOGO);
             System.out.println("Hello! I'm TrackMe");
-            Main.load();
-            Main.start();
+            TrackMe.load();
+            TrackMe.start();
         } catch (TrackMeException e) {
             throw new RuntimeException(e);
         }

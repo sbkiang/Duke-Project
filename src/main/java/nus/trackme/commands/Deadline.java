@@ -1,5 +1,7 @@
 package nus.trackme.commands;
 import nus.trackme.parser.ParseDateTime;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -18,11 +20,31 @@ public class Deadline extends Task {
 
     @Override
     public boolean isUpcoming(LocalDateTime currentDT, int reminderDays, int reminderHours){
-        //Parse the date string
-        ParseDateTime date = new ParseDateTime(by);
-        LocalDateTime deadlineDT = date.deadlineDT(by);
-        LocalDateTime reminderDT = currentDT.plusDays(reminderDays).plusHours(reminderHours);
-        return (!deadlineDT.isAfter(reminderDT) || deadlineDT.equals(reminderDT) || deadlineDT.toLocalDate().isEqual(reminderDT.toLocalDate())) && (deadlineDT.isAfter(currentDT) || deadlineDT.equals(currentDT) || deadlineDT.toLocalDate().isEqual(currentDT.toLocalDate()));
+
+        String[] parts = by.split(" ");
+
+        if(parts.length == 4){
+            //Parse the date string
+            ParseDateTime date = new ParseDateTime(by);
+            LocalDateTime deadlineDT = date.deadlineDT(by);
+            LocalDateTime reminderDT = currentDT.plusDays(reminderDays).plusHours(reminderHours);
+            return (!deadlineDT.isAfter(reminderDT) || deadlineDT.equals(reminderDT) || deadlineDT.toLocalDate().isEqual(reminderDT.toLocalDate())) && (deadlineDT.isAfter(currentDT) || deadlineDT.equals(currentDT) || deadlineDT.toLocalDate().isEqual(currentDT.toLocalDate()));
+
+        }
+        else if(parts.length == 3){
+
+            LocalDate currentD = LocalDate.now();
+            ParseDateTime date = new ParseDateTime(by);
+            LocalDate deadlineD = date.deadlineD(by);
+            LocalDate reminderD = currentD.plusDays(reminderDays);
+
+            return(!deadlineD.isAfter(reminderD) || deadlineD.isEqual(reminderD) && deadlineD.isAfter(currentD) || deadlineD.isEqual(currentD));
+
+        }
+        else{
+            return false;
+        }
+
 
     }
 
