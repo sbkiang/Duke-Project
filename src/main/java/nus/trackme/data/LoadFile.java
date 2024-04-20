@@ -66,6 +66,12 @@ public class LoadFile {
                             }
                             else{
                                 System.setOut(originalOut);
+
+                                String isDone = "";
+                                if(parts[2].equals("1")){
+                                    isDone = "X";
+                                }
+
                                 if(!isExpired){
                                     System.out.println("Expired Task: Removed all from Task List");
                                     System.out.println("-------------------------------------------------");
@@ -77,10 +83,11 @@ public class LoadFile {
                                     for(String tag : tags){
                                         tagdesc = tagdesc + tag;
                                     }
-                                    System.out.println("[D][ ] " + parts[1] + " " + tagdesc + " (by: " + parts[3] + ")");
+
+                                    System.out.println("[D][" + isDone + "] " + parts[1] + " " + tagdesc + " (by: " + parts[3] + ")");
                                 }
                                 else{
-                                    System.out.println("[D][ ] " + parts[1] + " (by: " + parts[3] + ")");
+                                    System.out.println("[D][" + isDone + "] " + parts[1] + " (by: " + parts[3] + ")");
                                 }
 
                                 isExpired = true;
@@ -94,6 +101,12 @@ public class LoadFile {
                             }
                             else{
                                 System.setOut(originalOut);
+
+                                String isDone = "";
+                                if(parts[2].equals("1")){
+                                    isDone = "X";
+                                }
+
                                 if(!isExpired){
                                     System.out.println("Expired Task: Removed all from Task List");
                                     System.out.println("-------------------------------------------------");
@@ -105,10 +118,10 @@ public class LoadFile {
                                     for(String tag : tags){
                                         tagdesc = tagdesc + tag;
                                     }
-                                    System.out.println("[E][ ] " + parts[1] + " " + tagdesc + " (from: " + parts[4] + " to: " + parts[5] + ")");
+                                    System.out.println("[E][" + isDone + "] " + parts[1] + " " + tagdesc + " (from: " + parts[4] + " to: " + parts[5] + ")");
                                 }
                                 else{
-                                    System.out.println("[E][ ] " + parts[1] + " (from: " + parts[4] + " to: " + parts[5] + ")");
+                                    System.out.println("[E][" + isDone + "] " + parts[1] + " (from: " + parts[4] + " to: " + parts[5] + ")");
                                 }
 
                                 isExpired = true;
@@ -120,11 +133,11 @@ public class LoadFile {
                             break;
                     }
 
-                    if(parts[2].equals("1")){
+                    if(!isExpired && parts[2].equals("1")){
                         task.markTaskAsDone(index);
                     }
 
-                    if(!parts[6].equals("-")){
+                    if(!isExpired && !parts[6].equals("-")){
                         String [] tags = parts[6].split("\\|");
                         for(String tag:tags){
                             task.tagTask(index, tag);
